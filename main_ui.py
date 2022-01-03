@@ -1,7 +1,8 @@
 from PyQt5.QtCore import *
-from PyQt5.QtWidgets import QWidget, QDesktopWidget, QPushButton, QLineEdit, QComboBox, \
-    QSpinBox, QDoubleSpinBox, QGridLayout, QHBoxLayout, QApplication, QFormLayout, QCheckBox, \
+from PyQt5.QtWidgets import QWidget, QDesktopWidget, QLineEdit, QComboBox, \
+    QSpinBox, QGridLayout, QHBoxLayout, QFormLayout, QCheckBox, \
     QToolButton, QLabel, QStyle, QVBoxLayout
+from pyqt5_plugins.examplebuttonplugin import QtGui
 
 
 class MainUI(QWidget):
@@ -34,6 +35,7 @@ class MainUI(QWidget):
         self.choice_play_mode = QComboBox()
         self.choice_play_mode.addItems(["multi", "hold", "toggle"])
         self.buttons = [QToolButton() for i in range(16)]
+        self.code = ""
 
         top = QHBoxLayout()
         top.addWidget(self.button_save)
@@ -50,7 +52,7 @@ class MainUI(QWidget):
         grid = QGridLayout()
         for i in range(4):
             for j in range(4):
-                grid.addWidget(self.buttons[j*4+i], j, i)
+                grid.addWidget(self.buttons[j * 4 + i], j, i)
 
         form = QFormLayout()
         path_layout = QHBoxLayout()
@@ -89,6 +91,7 @@ class MainUI(QWidget):
 
         self.timer = QTimer()
         self.timer.start(10)
+        self.setFocus()
 
     def center(self):
         qr = self.frameGeometry()
@@ -97,9 +100,11 @@ class MainUI(QWidget):
         self.move(qr.topLeft())
 
     def on_settings_change(self, callback):
-        signals = [self.input_path.textChanged, self.input_on_note.textChanged, self.choice_play_mode.currentTextChanged,
+        signals = [self.input_path.textChanged, self.input_on_note.textChanged,
+                   self.choice_play_mode.currentTextChanged,
                    self.input_gain.valueChanged, self.input_fade_in.valueChanged, self.input_fade_out.valueChanged,
-                   self.check_remove_silence.stateChanged, self.check_loop.stateChanged, self.input_skip_start.valueChanged,
+                   self.check_remove_silence.stateChanged, self.check_loop.stateChanged,
+                   self.input_skip_start.valueChanged,
                    self.input_skip_end.valueChanged]
 
         for signal in signals:
@@ -107,7 +112,28 @@ class MainUI(QWidget):
 
     def on_grid_press(self, callback):
         for index, button in enumerate(self.buttons):
-            button.clicked.connect(lambda _, note=(60+index): callback(note))
+            button.clicked.connect(lambda _, note=(60 + index): callback(note))
 
     def on_tick(self, callback):
         self.timer.timeout.connect(callback)
+
+    def keyPressEvent(self, event: QtGui.QKeyEvent) -> None:
+        map = {
+            Qt.Key_Up: "u",
+            Qt.Key_Down: "d",
+            Qt.Key_Left: "l",
+            Qt.Key_Right: "r",
+            Qt.Key_A: "a",
+            Qt.Key_B: "b",
+        }
+        if event.key() in map.keys():
+            self.code += map[event.key()]
+            if len(self.code) > 10:
+                self.code = self.code[:-10]
+            if self.code == "uuddlrlrba":
+                try:
+                    import webbrowser
+                    webbrowser.open("https://www.youtube.com/watch?v=l2yYauKujfM&t=1s")
+                except ImportError:
+                    print("Have some fun in life and run `pip3 install webbrowser`")
+                    pass

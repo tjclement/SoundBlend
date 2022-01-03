@@ -2,3 +2,4 @@ pygame
 pydub
 sounddevice
 pyqt5
+webbrowser
