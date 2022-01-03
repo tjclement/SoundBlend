@@ -85,7 +85,7 @@ class MainUI(QWidget):
         self.layout().addLayout(top)
         self.layout().addLayout(bottom)
 
-        self.setWindowTitle("SoundBlender")
+        self.setWindowTitle("SoundBlend")
         self.center()
         self.show()
 
@@ -131,9 +131,5 @@ class MainUI(QWidget):
             if len(self.code) > 10:
                 self.code = self.code[:-10]
             if self.code == "uuddlrlrba":
-                try:
-                    import webbrowser
-                    webbrowser.open("https://www.youtube.com/watch?v=l2yYauKujfM&t=1s")
-                except ImportError:
-                    print("Have some fun in life and run `pip3 install webbrowser`")
-                    pass
+                import webbrowser
+                webbrowser.open("https://www.youtube.com/watch?v=l2yYauKujfM&t=1s")

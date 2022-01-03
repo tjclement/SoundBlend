@@ -6,11 +6,11 @@ What works:
 * Detecting key presses and releases from a MIDI device (responds to MIDI notes 60-76).
 * Loading, transforming (removing silence, gain, fading), and playing samples to a given output device.
 * Rendering and changing the configured sample and its properties on key press or button press in UI.
+* Switching MIDI input and sound output device from the UI dropdowns.
 
 What doesn't work:
 * Saving settings to and loading from a profile file.
 * Loading a sample path via the load button next to its input field.
-* Switching MIDI input and sound output device from the UI dropdowns.
 
 ## Sample settings
 `on_note`: which MIDI note to trigger on (0x3C-0x4B or 60-75).

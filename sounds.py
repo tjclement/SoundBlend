@@ -80,7 +80,8 @@ class SoundProperties:
 
 class Player:
     def __init__(self, device: dict):
-        mixer.init(frequency=int(device["default_samplerate"]), devicename=device["name"])
+        if not mixer.get_init():
+            mixer.init(frequency=int(device["default_samplerate"]), devicename=device["name"])
         # mixer.set_num_channels(4)
         self.registered_sounds = {}  # type: Dict[SoundProperties]
 
@@ -107,6 +108,11 @@ class Player:
             sound = mixer.Sound(buffer=data)
             props.sound = sound
             self.registered_sounds[sound_info["on_note"]] = props
+
+    def stop(self):
+        self.registered_sounds = {}
+        if mixer.get_init():
+            mixer.quit()
 
 
 def get_output_devices():
