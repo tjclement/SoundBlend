@@ -126,6 +126,5 @@ class Controller:
 
 
 if __name__ == "__main__":
-    # TODO: change this to update from the output device dropdown
     controller = Controller()
     sys.exit(controller.exec())
