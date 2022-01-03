@@ -1,11 +1,8 @@
 import sys
 import midi
-from sounds import Player, PlayMode, SoundProperties, get_output_devices
 from PyQt5.QtWidgets import QApplication
-
 from main_ui import MainUI
-
-updating_ui = False
+from sounds import Player, PlayMode, SoundProperties, get_output_devices
 
 
 class Controller:
