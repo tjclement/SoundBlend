@@ -65,10 +65,12 @@ def set_ui_devices(ui: MainUI, midi_inputs, sound_outputs):
 
 if __name__ == "__main__":
     sound_outputs = get_output_devices()
+    # TODO: change this to update from the output device dropdown
     device = sound_outputs[4]
     player = Player(device)
     shown_midi_note = 0
 
+    # TODO: change this to load from and save to a profile file
     player.register_sounds([
         {"on_note": 0x3C, "mode": PlayMode.HOLD, "path": "/Users/tom/Downloads/soundboard/applause.mp3", "fade_in": 300,
          "fade_out": 300},
@@ -85,6 +87,7 @@ if __name__ == "__main__":
 
     midi_inputs, midi_outputs = midi.get_devices()
     if len(midi_inputs) > 0:
+        # TODO: change this to update from the midi input dropdown
         midi_device = midi.MidiConnection(midi_inputs[0].id)
         midi_device.add_callback(player.callback)
         midi_device.add_callback(midi_button_handler)

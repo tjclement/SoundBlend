@@ -1,3 +1,4 @@
 pygame
 pydub
 sounddevice
+pyqt5
