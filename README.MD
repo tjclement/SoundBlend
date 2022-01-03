@@ -1,6 +1,6 @@
 # Play sound samples on MIDI key press
 
-This tool was designed to play sounds to BlackHole when a button on a CampZone 2020 badge running the MIDI Controller app. Work in progress.
+This tool was designed to play sounds to BlackHole when a button is pressed on a CampZone 2020 badge running the MIDI Controller app. Work in progress.
 
 What works:
 * Detecting key presses and releases from a MIDI device (responds to MIDI notes 60-76).
