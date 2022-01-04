@@ -58,6 +58,7 @@ class Controller:
             {"on_note": 0x3E, "mode": PlayMode.HOLD, "path": "/Users/tom/Downloads/soundboard/cricket-sound.mp3"},
             {"on_note": 0x3F, "mode": PlayMode.MULTI, "path": "/Users/tom/Downloads/soundboard/doh.mp3", "gain": -9},
             {"on_note": 0x40, "mode": PlayMode.MULTI, "path": "/Users/tom/Downloads/soundboard/anime-wow.mp3"},
+            {"on_note": 0x44, "mode": PlayMode.SINGLE, "path": "/Users/tom/Downloads/soundboard/mlg-air-horn.mp3"},
         ])
 
     def set_input_device(self):
@@ -80,7 +81,7 @@ class Controller:
         self.updating_ui = True
         self.ui.input_path.setText(props.path or "")
         self.ui.input_on_note.setText(str(props.on_note) or "60")
-        self.ui.choice_play_mode.setCurrentText(props.mode.value or PlayMode.MULTI)
+        self.ui.choice_play_mode.setCurrentText(props.mode.value or PlayMode.SINGLE)
         self.ui.input_gain.setValue(props.gain or 0.0)
         self.ui.input_fade_in.setValue(props.fade_in or 100)
         self.ui.input_fade_out.setValue(props.fade_out or 100)
@@ -105,6 +106,7 @@ class Controller:
         props.loop = self.ui.check_loop.isChecked()
         props.skip_start = int(self.ui.input_skip_start.value())
         props.skip_end = int(self.ui.input_skip_end.value())
+        self.player.process_sound(props)
 
     def ui_button_handler(self, midi_note):
         self.active_note = midi_note

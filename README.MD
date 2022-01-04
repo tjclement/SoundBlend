@@ -16,6 +16,7 @@ What doesn't work:
 `on_note`: which MIDI note to trigger on (0x3C-0x4B or 60-75).
 
 `mode`:
+* PlayMode.SINGLE starts a sample on the first press, and stops and restarts it on a second press.
 * PlayMode.MULTI to have samples play from beginning to end when you press a button. Pressing it again plays another instance of the sound concurrently.
 * PlayMode.STARTSTOP starts a sample on the first press, and stops it on a second press.
 * PlayMode.HOLD starts a sample when you press a key, and stops it when you release the key.

@@ -14,6 +14,7 @@ class PlayMode(Enum):
     MULTI = "multi"  # Sound can be played multiple times concurrently, and will play until completion
     HOLD = "hold"  # Sound will play as long as its button is pressed, and stops when released
     TOGGLE = "toggle"  # Pressing once will start the sound, pressing again will stop it
+    SINGLE = "single"  # Pressing once will start the sound, pressing again will stop it and start a new one
 
     @staticmethod
     def from_string(string):
@@ -23,6 +24,8 @@ class PlayMode(Enum):
             return PlayMode.HOLD
         elif string == PlayMode.TOGGLE.value:
             return PlayMode.TOGGLE
+        elif string == PlayMode.SINGLE.value:
+            return PlayMode.SINGLE
         else:
             return None
 
@@ -93,9 +96,11 @@ class Player:
         is_playing = sound_info.channel and sound_info.channel.get_busy()
 
         if (not is_pressed and sound_info.mode is PlayMode.HOLD) or \
-                (is_pressed and sound_info.mode is PlayMode.TOGGLE and is_playing):
+                (is_pressed and sound_info.mode is PlayMode.TOGGLE and is_playing) or \
+                (is_pressed and sound_info.mode is PlayMode.SINGLE and is_playing):
             sound_info.sound.fadeout(sound_info.fade_out)
-            return
+            if sound_info.mode is not PlayMode.SINGLE:
+                return
 
         if is_pressed and sound_info.sound:
             loops = -1 if sound_info.loop else 0
@@ -104,15 +109,18 @@ class Player:
     def register_sounds(self, sounds: List[dict]) -> None:
         for sound_info in sounds:
             props = SoundProperties.from_dict(sound_info)
-            data = transcode.extract_samples(props)
-            sound = mixer.Sound(buffer=data)
-            props.sound = sound
+            Player.process_sound(props)
             self.registered_sounds[sound_info["on_note"]] = props
 
     def stop(self):
         self.registered_sounds = {}
         if mixer.get_init():
             mixer.quit()
+
+    @staticmethod
+    def process_sound(sound: SoundProperties):
+        data = transcode.extract_samples(sound)
+        sound.sound = mixer.Sound(buffer=data)
 
 
 def get_output_devices():

@@ -22,6 +22,7 @@ class MainUI(QWidget):
         self.button_path.setText("...")
         self.input_on_note = QLineEdit()
         self.input_gain = QSpinBox()
+        self.input_gain.setMinimum(-60)
         self.input_fade_in = QSpinBox()
         self.input_fade_in.setMaximum(9999)
         self.input_fade_out = QSpinBox()
@@ -33,7 +34,7 @@ class MainUI(QWidget):
         self.input_skip_end = QSpinBox()
         self.input_skip_end.setMaximum(999999)
         self.choice_play_mode = QComboBox()
-        self.choice_play_mode.addItems(["multi", "hold", "toggle"])
+        self.choice_play_mode.addItems(["single", "multi", "hold", "toggle"])
         self.buttons = [QToolButton() for i in range(16)]
         self.code = ""
 
@@ -131,5 +132,7 @@ class MainUI(QWidget):
             if len(self.code) > 10:
                 self.code = self.code[:-10]
             if self.code == "uuddlrlrba":
+                import random
                 import webbrowser
-                webbrowser.open("https://www.youtube.com/watch?v=l2yYauKujfM&t=1s")
+                v = random.choice(["6Lle4lKh9YE&t=39s", "l2yYauKujfM&t=29s"])
+                webbrowser.open(f"https://youtu.be/{v}")
